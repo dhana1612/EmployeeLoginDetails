@@ -21,11 +21,11 @@ namespace EmployeeLoginDetails.Controllers
         [HttpPost("register")]                                                 
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request)
         {
-            // Check if the ModelState is valid
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //// Check if the ModelState is valid
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
             try
 
@@ -40,13 +40,14 @@ namespace EmployeeLoginDetails.Controllers
             }
         }
 
+
         //Login  <--UserLogin--> 
         [HttpPost("Login")]
         public async Task<IActionResult> VerifyLoginDetails([FromBody] Dummy res)
         {
             //Search for the member by email
 
-            var member = await _context.UserLogin.FirstOrDefaultAsync(m => m.UserID == res.UserID);
+            var member = await _context.UserLogin.FirstOrDefaultAsync(m => m.Email == res.Email);
 
 
             // Check if the member exists
@@ -58,11 +59,11 @@ namespace EmployeeLoginDetails.Controllers
                 {
                     return Ok("User");
                 }
-                return NotFound("UserID and Password do not match.");
+                return NotFound("Email ID and Password do not match.");
             }
             else
             {
-                return NotFound("UserID not found");
+                return NotFound("Email ID not found");
             }
         }
 
@@ -72,7 +73,7 @@ namespace EmployeeLoginDetails.Controllers
         {
 
             // Search for the member by email
-            var member = await _context.UserLogin.FirstOrDefaultAsync(m => m.UserID == res.UserID);
+            var member = await _context.UserLogin.FirstOrDefaultAsync(m => m.Email == res.Email);
 
 
             var username = member.Username;
