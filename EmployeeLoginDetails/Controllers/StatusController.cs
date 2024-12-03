@@ -26,6 +26,21 @@ namespace EmployeeLoginDetails.Controllers
                 await _context.SaveChangesAsync();
 
 
+                return Ok();
+        
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating user: {ex.Message}");
+            }
+        }
+
+
+        [HttpPost("WorkingHoursCalculate")]
+        public async Task<IActionResult> WorkingHoursCalculate([FromBody] LoginDetails req)
+        {
+            try
+            {
                 var result = _context.EmployeeLoginDetails
                                      .Where(record => record.Date == req.Date)
                                      .Select(record => record.WorkingHours)
@@ -36,11 +51,11 @@ namespace EmployeeLoginDetails.Controllers
 
 
 
-                TimeSpan totalTime = TimeSpan.Zero; 
+                TimeSpan totalTime = TimeSpan.Zero;
 
-                foreach (var workingHours in result) 
+                foreach (var workingHours in result)
                 {
-                    totalTime += workingHours; 
+                    totalTime += workingHours;
                 }
 
                 // Output the total time
@@ -48,10 +63,17 @@ namespace EmployeeLoginDetails.Controllers
 
                 TimeSpan expectedTime = TimeSpan.Parse("08:00:00"); // Define the expected total time
 
+                TimeSpan expectedTime1 = TimeSpan.Parse("04:00:00");
+
                 if (totalTime >= expectedTime)
                 {
                     return Ok("Present");
                 }
+                else if (totalTime >= expectedTime1)
+                {
+                    return Ok("HalfDay Present");
+                }
+
                 else
                 {
                     return Ok("Absent");
@@ -59,8 +81,8 @@ namespace EmployeeLoginDetails.Controllers
 
 
 
-             
-        
+
+
             }
             catch (Exception ex)
             {
