@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EmployeeLoginDetails.Migrations
 {
     [DbContext(typeof(UserLoginDbContext))]
-    [Migration("20241121221154_inital")]
+    [Migration("20241202225452_inital")]
     partial class inital
     {
         /// <inheritdoc />
@@ -58,8 +58,11 @@ namespace EmployeeLoginDetails.Migrations
 
             modelBuilder.Entity("EmployeeLoginDetails.Models.UserRegistrationRequest", b =>
                 {
-                    b.Property<string>("UserID")
-                        .HasColumnType("text");
+                    b.Property<int>("UserID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserID"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -74,6 +77,9 @@ namespace EmployeeLoginDetails.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("UserID");
+
+                    b.HasIndex("UserID", "Email")
+                        .IsUnique();
 
                     b.ToTable("UserLogin");
                 });

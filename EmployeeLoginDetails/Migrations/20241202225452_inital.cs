@@ -34,7 +34,8 @@ namespace EmployeeLoginDetails.Migrations
                 name: "UserLogin",
                 columns: table => new
                 {
-                    UserID = table.Column<string>(type: "text", nullable: false),
+                    UserID = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Username = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false)
@@ -43,6 +44,12 @@ namespace EmployeeLoginDetails.Migrations
                 {
                     table.PrimaryKey("PK_UserLogin", x => x.UserID);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLogin_UserID_Email",
+                table: "UserLogin",
+                columns: new[] { "UserID", "Email" },
+                unique: true);
         }
 
         /// <inheritdoc />
