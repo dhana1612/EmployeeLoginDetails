@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EmployeeLoginDetails.Migrations
 {
     [DbContext(typeof(UserLoginDbContext))]
-    [Migration("20241121221154_inital")]
-    partial class inital
+    [Migration("20241202222836_emplog")]
+    partial class emplog
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
