@@ -23,6 +23,5 @@ namespace EmployeeLoginDetails.Data
         }
 
         public DbSet<LoginDetails> EmployeeLoginDetails { get; set; }
-
     }
 }

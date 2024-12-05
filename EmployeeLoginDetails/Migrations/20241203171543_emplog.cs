@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EmployeeLoginDetails.Migrations
 {
     /// <inheritdoc />
-    public partial class inital : Migration
+    public partial class emplog : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,23 +45,6 @@ namespace EmployeeLoginDetails.Migrations
                     table.PrimaryKey("PK_UserLogin", x => x.UserID);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UserLoginStatus",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    FirstCheckIn = table.Column<TimeSpan>(type: "interval", nullable: false),
-                    LastCheckOut = table.Column<TimeSpan>(type: "interval", nullable: false),
-                    WorkingHours = table.Column<TimeSpan>(type: "interval", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserLoginStatus", x => x.Id);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogin_UserID_Email",
                 table: "UserLogin",
@@ -77,9 +60,6 @@ namespace EmployeeLoginDetails.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserLogin");
-
-            migrationBuilder.DropTable(
-                name: "UserLoginStatus");
         }
     }
 }

@@ -29,8 +29,46 @@ namespace EmployeeLoginDetails.Controllers
                 await _context.SaveChangesAsync();
 
 
+<<<<<<< HEAD
                 return Ok();
 
+=======
+                var result = _context.EmployeeLoginDetails
+                                     .Where(record => record.Date == req.Date)
+                                     .Select(record => record.WorkingHours)
+                                     .ToArray();
+
+
+                Console.WriteLine(string.Join(", ", result));
+
+
+
+                TimeSpan totalTime = TimeSpan.Zero; 
+
+                foreach (var workingHours in result) 
+                {
+                    totalTime += workingHours; 
+                }
+
+                // Output the total time
+                Console.WriteLine($"Total Working Hours: {totalTime}");
+
+                TimeSpan expectedTime = TimeSpan.Parse("08:00:00"); // Define the expected total time
+
+                if (totalTime >= expectedTime)
+                {
+                    return Ok("Present");
+                }
+                else
+                {
+                    return Ok("Absent");
+                }
+
+
+
+             
+        
+>>>>>>> 90106cdd9db2cd8496d009daa85755a194d24e70
             }
             catch (Exception ex)
             {
@@ -67,6 +105,7 @@ namespace EmployeeLoginDetails.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data: {ex.Message}");
             }
         }
+
 
 
     //Saving CheckOut Time & Working Hour Time
@@ -181,6 +220,7 @@ namespace EmployeeLoginDetails.Controllers
             if (totalHours >= halfDay) return "HalfDay Present";
             return "Absent";
         }
+
 
     }
 }

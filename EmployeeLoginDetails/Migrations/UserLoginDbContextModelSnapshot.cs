@@ -53,34 +53,6 @@ namespace EmployeeLoginDetails.Migrations
                     b.ToTable("EmployeeLoginDetails");
                 });
 
-            modelBuilder.Entity("EmployeeLoginDetails.Models.LoginDetails1", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<TimeSpan>("FirstCheckIn")
-                        .HasColumnType("interval");
-
-                    b.Property<TimeSpan>("LastCheckOut")
-                        .HasColumnType("interval");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
-
-                    b.Property<TimeSpan>("WorkingHours")
-                        .HasColumnType("interval");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserLoginStatus");
-                });
-
             modelBuilder.Entity("EmployeeLoginDetails.Models.UserRegistrationRequest", b =>
                 {
                     b.Property<int>("UserID")
