@@ -27,51 +27,31 @@ namespace EmployeeLoginDetails.Controllers
                 await _context.SaveChangesAsync();
 
 
-                return Ok();
-        
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating user: {ex.Message}");
-            }
-        }
-
-
-        [HttpPost("WorkingHoursCalculate")]
-        public async Task<IActionResult> WorkingHoursCalculate([FromBody] LoginDetails req)
-        {
-            try
-            {
-                var resultWorkingHours = _context.EmployeeLoginDetails
-                                     .Where(record => record.Date == req.Date && record.Username == req.Username)
+                var result = _context.EmployeeLoginDetails
+                                     .Where(record => record.Date == req.Date)
                                      .Select(record => record.WorkingHours)
                                      .ToArray();
 
-                TimeSpan totalworkingHours = resultWorkingHours.Any() ? resultWorkingHours.Max() : TimeSpan.Zero;
+
+                Console.WriteLine(string.Join(", ", result));
 
 
-                //TimeSpan totalworkingHours = TimeSpan.Zero;
 
-                //foreach (var workingHours in resultWorkingHours)
-                //{
-                //    totalworkingHours += workingHours;
-                //}
+                TimeSpan totalTime = TimeSpan.Zero; 
+
+                foreach (var workingHours in result) 
+                {
+                    totalTime += workingHours; 
+                }
 
                 // Output the total time
-                Console.WriteLine($"Total Working Hours: {totalworkingHours}");
+                Console.WriteLine($"Total Working Hours: {totalTime}");
 
                 TimeSpan expectedTime = TimeSpan.Parse("08:00:00"); // Define the expected total time
 
-                TimeSpan expectedTime1 = TimeSpan.Parse("04:00:00");
-
-
-                if (totalworkingHours >= expectedTime)
+                if (totalTime >= expectedTime)
                 {
                     return Ok("Present");
-                }
-                else if (totalworkingHours >= expectedTime1)
-                {
-                    return Ok("HalfDay Present");
                 }
                 else
                 {
@@ -80,69 +60,14 @@ namespace EmployeeLoginDetails.Controllers
 
 
 
-
-
+             
+        
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating user: {ex.Message}");
             }
         }
-
-
-
-        [HttpPost("WorkingHoursStatus")]
-        public async Task<IActionResult> WorkingHoursStatus([FromBody] LoginDetails req)
-        {
-            try
-            {
-                // Fetch records in one query
-                var records = _context.EmployeeLoginDetails
-                              .Where(record => record.Date == req.Date && record.Username == req.Username)
-                              .ToList();
-
-                // Calculate values
-                var resultWorkingHours = records.Select(record => record.WorkingHours).ToArray();
-                var resultCheckIn = records.Select(record => record.CheckIn).ToArray();
-                var resultCheckOut = records.Select(record => record.CheckOut).ToArray();
-
-                var earliestCheckIn = resultCheckIn.Any() ? resultCheckIn.Min() : TimeSpan.Zero;
-                var lastCheckOut = resultCheckOut.Any() ? resultCheckOut.Max() : TimeSpan.Zero;
-                TimeSpan totalworkingHours = resultWorkingHours.Any() ? resultWorkingHours.Max() : TimeSpan.Zero;
-
-
-
-                // Determine working status
-                TimeSpan expectedTime = TimeSpan.Parse("08:00:00");
-                TimeSpan expectedTime1 = TimeSpan.Parse("04:00:00");
-                string WorkingStatus = GetWorkingStatus(totalworkingHours, expectedTime, expectedTime1);
-
-                // Create and save LoginDetails1
-                LoginDetails1 ld = new LoginDetails1
-                {
-                    Date = req.Date,
-                    FirstCheckIn = earliestCheckIn,
-                    LastCheckOut = lastCheckOut,
-                    WorkingHours = totalworkingHours,
-                    Status = WorkingStatus
-                };
-
-                return Ok(ld);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating user: {ex.Message}");
-            }
-        }
-
-        private string GetWorkingStatus(TimeSpan totalHours, TimeSpan fullDay, TimeSpan halfDay)
-        {
-            if (totalHours >= fullDay) return "Present";
-            if (totalHours >= halfDay) return "HalfDay Present";
-            return "Absent";
-        }
-
-
 
 
         [HttpGet("GetAttendanceSummary")]
@@ -172,10 +97,6 @@ namespace EmployeeLoginDetails.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data: {ex.Message}");
             }
         }
-
-
-
-
 
     }
 }

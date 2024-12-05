@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EmployeeLoginDetails.Migrations
 {
     [DbContext(typeof(UserLoginDbContext))]
-    [Migration("20241203225148_inital")]
-    partial class inital
+    [Migration("20241203171543_emplog")]
+    partial class emplog
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,34 +54,6 @@ namespace EmployeeLoginDetails.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EmployeeLoginDetails");
-                });
-
-            modelBuilder.Entity("EmployeeLoginDetails.Models.LoginDetails1", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<TimeSpan>("FirstCheckIn")
-                        .HasColumnType("interval");
-
-                    b.Property<TimeSpan>("LastCheckOut")
-                        .HasColumnType("interval");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
-
-                    b.Property<TimeSpan>("WorkingHours")
-                        .HasColumnType("interval");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserLoginStatus");
                 });
 
             modelBuilder.Entity("EmployeeLoginDetails.Models.UserRegistrationRequest", b =>
